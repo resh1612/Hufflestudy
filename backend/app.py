@@ -6,9 +6,8 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import os, requests, cohere
 
-# ──────────────────────────────────────────
 # Flask + DB
-# ──────────────────────────────────────────
+
 app = Flask(__name__, static_folder='../frontend', static_url_path='/frontend')
 app.secret_key = 'supersecretkey'
 
@@ -20,18 +19,16 @@ app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{DB_PATH}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-# ──────────────────────────────────────────
 # Models
-# ──────────────────────────────────────────
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150), nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
 
-# ──────────────────────────────────────────
 # Routes: Auth
-# ──────────────────────────────────────────
+
 @app.route('/')
 def home():
     return redirect('/frontend/index.html')
@@ -58,9 +55,9 @@ def login():
     flash('Invalid credentials.')
     return redirect('/frontend/login.html')
 
-# ──────────────────────────────────────────
 # HuggingFace Summarizer
-# ──────────────────────────────────────────
+
+
 HF_MODEL_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
 HF_TOKEN = os.getenv("HF_TOKEN", "")
 
@@ -92,9 +89,10 @@ def summarize():
     except Exception as e:
         return jsonify({'summary': f'⚠️ HF error: {str(e)}'}), 500
 
-# ──────────────────────────────────────────
+
 # Cohere Quiz Generator
-# ──────────────────────────────────────────
+
+
 COHERE_API_KEY = os.getenv("COHERE_API_KEY", "")
 co = cohere.Client(COHERE_API_KEY)
 
@@ -140,9 +138,8 @@ def ask_ai():
         return jsonify({'answer': f'⚠️ Cohere error: {str(e)}'}), 500
 
 
-# ──────────────────────────────────────────
 # Run App
-# ──────────────────────────────────────────
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
