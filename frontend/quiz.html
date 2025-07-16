@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" class="transition-colors duration-300">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🧩 AI Quiz | HuffleStudy</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    };
+  </script>
+</head>
+<body class="bg-yellow-50 dark:bg-gray-900 dark:text-white min-h-screen transition-colors duration-300">
+
+ <!-- Header -->
+  <header class="bg-yellow-100 dark:bg-gray-800 shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center">
+      <h1 class="text-xl font-bold text-yellow-800 dark:text-yellow-100 mb-2 md:mb-0">📚 HuffleStudy</h1>
+      <nav class="flex flex-wrap gap-4 items-center text-sm font-medium">
+        <a href="/frontend/dashboard.html" class="text-gray-800 dark:text-yellow-200 hover:underline hover:text-yellow-600">Home</a>
+        <a href="/frontend/summary.html" class="text-gray-800 dark:text-yellow-200 hover:underline hover:text-yellow-600">Summarizer</a>
+        <a href="/frontend/quiz.html" class="text-white bg-yellow-500 px-3 py-1.5 rounded dark:bg-yellow-600">Quiz</a>
+        <a href="/frontend/askai.html" class="text-gray-800 dark:text-yellow-200 hover:underline hover:text-yellow-600">Ask AI</a>
+        <a href="/frontend/schedule.html" class="text-gray-800 dark:text-yellow-200 hover:underline hover:text-yellow-600">Schedule</a>
+        <div class="flex items-center gap-2 ml-4">
+          <label class="text-sm font-semibold text-yellow-900 dark:text-yellow-100">🌙 Dark Mode</label>
+          <input id="darkToggle" type="checkbox" class="w-5 h-5 accent-yellow-600">
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="flex flex-col items-center py-10 px-6">
+    <h2 class="text-3xl font-bold text-yellow-700 dark:text-yellow-200 mb-6">🧩 AI Quiz Generator</h2>
+
+    <!-- Quiz -->
+    <div class="w-full max-w-3xl bg-white dark:bg-gray-800 shadow-lg border border-yellow-300 dark:border-yellow-600 rounded-2xl p-6 space-y-4">
+      <label class="block font-semibold text-gray-700 dark:text-yellow-100">Topic</label>
+      <div class="flex gap-2">
+        <input
+          id="quizTopic"
+          type="text"
+          placeholder="e.g. Full‑stack development"
+          class="flex-1 border border-gray-300 dark:border-yellow-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 dark:bg-gray-700 dark:text-white"
+        />
+        <button
+          onclick="generateQuiz()"
+          class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg flex-shrink-0 transition duration-200"
+        >
+          Generate Quiz
+        </button>
+      </div>
+      <div id="spinner" class="hidden text-yellow-600 flex items-center gap-2">
+        <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" />
+        </svg>
+        <span>Generating…</span>
+      </div>
+      <pre
+        id="quizResult"
+        class="whitespace-pre-wrap border border-yellow-200 dark:border-yellow-600 bg-yellow-50 dark:bg-gray-700 rounded-lg p-4 text-gray-800 dark:text-white min-h-[160px]"
+      ></pre>
+    </div>
+  </main>
+  <script>
+    async function generateQuiz() {
+      const topic = document.getElementById('quizTopic').value.trim();
+      if (!topic) {
+        alert('Please enter a topic');
+        return;
+      }
+
+      document.getElementById('spinner').classList.remove('hidden');
+      document.getElementById('quizResult').textContent = '';
+
+      try {
+        const res = await fetch('/generate_quiz', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ topic })
+        });
+        const data = await res.json();
+        document.getElementById('quizResult').textContent = data.quiz || data.error;
+      } catch (err) {
+        document.getElementById('quizResult').textContent = '⚠️ Server error. Please try again.';
+      } finally {
+        document.getElementById('spinner').classList.add('hidden');
+      }
+    }
+
+    const toggle = document.getElementById('darkToggle');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'dark') {
+      toggle.checked = true;
+      html.classList.add('dark');
+    }
+
+    toggle.addEventListener('change', () => {
+      if (toggle.checked) {
+        html.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        html.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<div class="flex justify-between items-center px-6 py-4 w-full max-w-7xl">
+  <h1 class="text-2xl font-bold text-yellow-900 dark:text-yellow-200">
+     HuffleStudy
+  </h1>
+  <div class="flex items-center gap-2">
+    <label class="text-sm font-semibold text-yellow-900 dark:text-yellow-100">🌙 Dark Mode</label>
+    <input id="darkToggle" type="checkbox" class="w-5 h-5 accent-yellow-600">
+  </div>
+</div>
+
+<script>
+  const toggle = document.getElementById('darkToggle');
+  const html = document.documentElement;
+
+  if (localStorage.getItem('theme') === 'dark') {
+    toggle.checked = true;
+    html.classList.add('dark');
+  }
+
+  toggle.addEventListener('change', () => {
+    if (toggle.checked) {
+      html.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      html.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  });
+</script>

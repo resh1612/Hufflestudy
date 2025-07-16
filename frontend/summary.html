@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" class="transition-colors duration-300">
+<head>
+  <meta charset="UTF-8" />
+  <title>🧠 Summary | HuffleStudy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+</head>
+<body class="bg-yellow-50 dark:bg-gray-900 dark:text-white font-sans min-h-screen pb-10 transition-colors duration-300">
+
+<header class="bg-yellow-100 dark:bg-gray-800 shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center">
+      <h1 class="text-xl font-bold text-yellow-800 dark:text-yellow-100 mb-2 md:mb-0">📚 HuffleStudy</h1>
+      <nav class="flex flex-wrap gap-4 items-center text-sm font-medium">
+        <a href="/frontend/dashboard.html" class="text-gray-800 dark:text-yellow-200 hover:underline hover:text-yellow-600">Home</a>
+        <a href="/frontend/summary.html" class="text-white bg-yellow-500 px-3 py-1.5 rounded dark:bg-yellow-600">Summarizer</a>
+        <a href="/frontend/quiz.html" class="text-gray-800 dark:text-yellow-200 hover:underline hover:text-yellow-600">Quiz</a>
+        <a href="/frontend/askai.html" class="text-gray-800 dark:text-yellow-200 hover:underline hover:text-yellow-600">Ask AI</a>
+        <a href="/frontend/schedule.html" class="text-gray-800 dark:text-yellow-200 hover:underline hover:text-yellow-600">Schedule</a>
+        <div class="flex items-center gap-2 ml-4">
+          <label class="text-sm font-semibold text-yellow-900 dark:text-yellow-100">🌙 Dark Mode</label>
+          <input id="darkToggle" type="checkbox" class="w-5 h-5 accent-yellow-600">
+        </div>
+      </nav>
+    </div>
+  </header>
+
+
+
+  <!-- Main Content -->
+  <main class="max-w-4xl mx-auto px-6 mt-10">
+    <h2 class="text-3xl font-bold mb-6 text-yellow-700 dark:text-yellow-200">🧠 Smart Summary Generator</h2>
+
+    <form id="summaryForm" class="space-y-4">
+      <textarea id="inputText" rows="8" placeholder="Paste your notes here..." required
+        class="w-full p-4 border border-yellow-300 rounded dark:bg-gray-800 dark:border-yellow-600 dark:text-white resize-none"></textarea>
+      <button type="submit"
+        class="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700 transition duration-200">
+        Summarize
+      </button>
+    </form>
+
+    <div class="mt-8">
+      <h3 class="text-xl font-semibold mb-2">🔍 Summary:</h3>
+      <p id="summaryResult"
+        class="mt-2 bg-white dark:bg-gray-800 p-4 border border-yellow-300 dark:border-yellow-600 rounded text-gray-800 dark:text-white whitespace-pre-line min-h-[100px]">
+      </p>
+    </div>
+  </main>
+
+  <!-- JS -->
+  <script>
+    const form = document.getElementById('summaryForm');
+    const result = document.getElementById('summaryResult');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const text = document.getElementById('inputText').value;
+
+      result.textContent = "Summarizing...";
+
+      const res = await fetch('/summarize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
+      });
+
+      const data = await res.json();
+      result.textContent = data.summary || '⚠️ Something went wrong.';
+    });
+
+    // Dark Mode Toggle
+    const toggle = document.getElementById('darkToggle');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'dark') {
+      toggle.checked = true;
+      html.classList.add('dark');
+    }
+
+    toggle.addEventListener('change', () => {
+      if (toggle.checked) {
+        html.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        html.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      }
+    });
+  </script>
+</body>
+</html>

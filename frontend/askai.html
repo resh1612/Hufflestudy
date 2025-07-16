@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" class="transition-colors duration-300">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🤖 Ask HuffleBot | HuffleStudy</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+</head>
+<body class="bg-yellow-50 dark:bg-gray-900 dark:text-white min-h-screen transition-colors duration-300">
+
+   <!--Header-->
+  <header class="bg-yellow-100 dark:bg-gray-800 shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center">
+      <h1 class="text-xl font-bold text-yellow-800 dark:text-yellow-100 mb-2 md:mb-0">📚 HuffleStudy</h1>
+      <nav class="flex flex-wrap gap-4 items-center text-sm font-medium">
+        <a href="/frontend/dashboard.html" class="text-gray-800 dark:text-yellow-200 hover:underline hover:text-yellow-600">Home</a>
+        <a href="/frontend/summary.html" class="text-gray-800 dark:text-yellow-200 hover:underline hover:text-yellow-600">Summarizer</a>
+        <a href="/frontend/quiz.html" class="text-gray-800 dark:text-yellow-200 hover:underline hover:text-yellow-600">Quiz</a>
+        <a href="/frontend/askai.html" class="text-white bg-yellow-500 px-3 py-1.5 rounded dark:bg-yellow-600">Ask AI</a>
+        <a href="/frontend/schedule.html" class="text-gray-800 dark:text-yellow-200 hover:underline hover:text-yellow-600">Schedule</a>
+        <div class="flex items-center gap-2 ml-4">
+          <label class="text-sm font-semibold text-yellow-900 dark:text-yellow-100">🌙 Dark Mode</label>
+          <input id="darkToggle" type="checkbox" class="w-5 h-5 accent-yellow-600">
+        </div>
+      </nav>
+    </div>
+  </header>
+
+
+  <!-- Main -->
+  <main class="flex flex-col items-center p-6 py-10">
+    <h1 class="text-3xl font-bold text-yellow-700 dark:text-yellow-200 mb-6">Ask HuffleBot 🤖</h1>
+
+    <div class="w-full max-w-3xl bg-white dark:bg-gray-800 p-6 rounded-xl shadow space-y-4 border border-yellow-300 dark:border-yellow-600">
+      <input type="text" id="questionInput" placeholder="Ask your doubt here..." 
+             class="w-full px-4 py-2 border border-yellow-300 dark:border-yellow-600 rounded dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+
+      <button onclick="askAI()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded font-semibold">
+        Ask AI
+      </button>
+
+      <div id="responseBox" class="text-gray-800 dark:text-white whitespace-pre-wrap mt-4 bg-yellow-50 dark:bg-gray-700 p-4 border border-yellow-300 dark:border-yellow-600 rounded hidden"></div>
+    </div>
+  </main>
+
+  <!-- Script -->
+  <script>
+    async function askAI() {
+      const q = document.getElementById('questionInput').value.trim();
+      const box = document.getElementById('responseBox');
+      if (!q) return alert("Please enter a question.");
+
+      box.classList.remove("hidden");
+      box.textContent = "Thinking... 🤖";
+
+      try {
+        const res = await fetch('/ask_ai', {
+          method: 'POST',
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: q })
+        });
+
+        const data = await res.json();
+        box.textContent = data.answer || "No answer received.";
+      } catch (e) {
+        box.textContent = "⚠️ Error connecting to AI server.";
+      }
+    }
+
+    const toggle = document.getElementById('darkToggle');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'dark') {
+      toggle.checked = true;
+      html.classList.add('dark');
+    }
+
+    toggle.addEventListener('change', () => {
+      if (toggle.checked) {
+        html.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        html.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      }
+    });
+  </script>
+</body>
+</html>

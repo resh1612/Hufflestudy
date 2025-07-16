@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" class="transition-colors duration-300">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HuffleStudy | Learn Smart</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    };
+  </script>
+  <style>
+    body {
+      font-family: 'Quicksand', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-yellow-50 dark:bg-gray-900 dark:text-white text-gray-800 transition-colors duration-300">
+
+  <!-- Dark Mode Toggle -->
+  <div class="absolute top-5 right-5 flex items-center gap-2">
+    <label class="text-sm font-semibold text-yellow-900 dark:text-yellow-100">Dark Mode</label>
+    <input id="darkToggle" type="checkbox" class="w-5 h-5 accent-yellow-600">
+  </div>
+
+  <!-- Hero Section -->
+  <section class="w-full flex flex-col justify-center items-center text-center px-6 py-24 max-w-5xl mx-auto">
+    <h1 class="text-5xl font-extrabold text-yellow-500 dark:text-yellow-300 leading-tight mb-4">
+      Welcome to HuffleStudy
+    </h1>
+    <p class="text-lg text-gray-700 dark:text-gray-300 mb-8 max-w-xl">
+      Your cozy, smart learning companion — where productivity meets simplicity.
+    </p>
+    <div class="space-x-4">
+      <a href="login.html" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-lg transition shadow-md">
+        Login
+      </a>
+      <a href="register.html" class="bg-transparent border border-yellow-500 text-yellow-600 hover:bg-yellow-100 dark:hover:bg-yellow-800 font-bold py-3 px-6 rounded-lg transition shadow-md">
+        Register
+      </a>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="bg-white dark:bg-gray-800 py-16 px-6">
+    <div class="max-w-6xl mx-auto text-center">
+      <h2 class="text-3xl font-bold mb-6 text-yellow-600 dark:text-yellow-300">What You'll Get</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+        <div class="bg-yellow-100 dark:bg-gray-700 rounded-xl p-6 shadow">
+          <h3 class="text-lg font-semibold text-yellow-800 dark:text-yellow-200 mb-2">Smart Reminders</h3>
+          <p class="text-gray-700 dark:text-gray-300">Schedule tasks & get pop-up notifications on time.</p>
+        </div>
+        <div class="bg-yellow-100 dark:bg-gray-700 rounded-xl p-6 shadow">
+          <h3 class="text-lg font-semibold text-yellow-800 dark:text-yellow-200 mb-2">AI Summarizer</h3>
+          <p class="text-gray-700 dark:text-gray-300">Generate quick, concise summaries from long notes.</p>
+        </div>
+        <div class="bg-yellow-100 dark:bg-gray-700 rounded-xl p-6 shadow">
+          <h3 class="text-lg font-semibold text-yellow-800 dark:text-yellow-200 mb-2">Quiz Generator</h3>
+          <p class="text-gray-700 dark:text-gray-300">Instantly create multiple-choice questions from topics.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dark Mode Script -->
+  <script>
+    const toggle = document.getElementById('darkToggle');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'dark') {
+      toggle.checked = true;
+      html.classList.add('dark');
+    }
+
+    toggle.addEventListener('change', () => {
+      if (toggle.checked) {
+        html.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        html.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      }
+    });
+  </script>
+
+</body>
+</html>

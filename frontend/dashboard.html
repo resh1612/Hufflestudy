@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" class="transition-colors duration-300">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard | HuffleStudy</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    };
+  </script>
+</head>
+<body class="bg-yellow-50 dark:bg-gray-900 dark:text-white text-gray-800 font-sans flex flex-col items-center min-h-screen py-10 transition-colors duration-300">
+
+  <!-- Dark mode toggle + Logout -->
+<div class="absolute top-5 right-5 flex items-center gap-4">
+  <div class="flex items-center gap-2">
+    <label class="text-sm font-semibold text-yellow-900 dark:text-yellow-100">🌙 Dark Mode</label>
+    <input id="darkToggle" type="checkbox" class="w-5 h-5 accent-yellow-600">
+  </div>
+  <button onclick="logout()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-1 rounded-md text-sm font-semibold shadow">
+    🔒 Logout
+  </button>
+</div>
+
+  <h1 class="text-3xl font-bold mb-8 text-yellow-900 dark:text-yellow-200">
+    HuffleStudy Dashboard
+  </h1>
+
+  <!-- Grid container -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl w-full px-6">
+
+    <!-- Summarizer -->
+    <a href="/frontend/summary.html" class="bg-white dark:bg-gray-800 border border-yellow-300 dark:border-yellow-600 rounded-lg shadow-md p-6 hover:shadow-lg transition">
+      <h2 class="text-xl font-semibold text-yellow-900 dark:text-yellow-200 mb-2">📝 Summarizer</h2>
+      <p class="text-sm text-gray-700 dark:text-gray-300">Get concise summaries of long paragraphs or notes.</p>
+    </a>
+
+    <!-- Quiz -->
+    <a href="/frontend/quiz.html" class="bg-white dark:bg-gray-800 border border-yellow-300 dark:border-yellow-600 rounded-lg shadow-md p-6 hover:shadow-lg transition">
+      <h2 class="text-xl font-semibold text-yellow-900 dark:text-yellow-200 mb-2">❓ Quiz Generator</h2>
+      <p class="text-sm text-gray-700 dark:text-gray-300">Generate MCQ quizzes for any topic using AI.</p>
+    </a>
+
+    <!-- Schedule -->
+    <a href="/frontend/schedule.html" class="bg-white dark:bg-gray-800 border border-yellow-300 dark:border-yellow-600 rounded-lg shadow-md p-6 hover:shadow-lg transition">
+      <h2 class="text-xl font-semibold text-yellow-900 dark:text-yellow-200 mb-2">📅 Schedule Reminder</h2>
+      <p class="text-sm text-gray-700 dark:text-gray-300">Set pop-up reminders for tasks or breaks.</p>
+    </a>
+
+    <!-- Ask AI (Chatbot) - Full width row -->
+    <a href="/frontend/askai.html" class="md:col-span-3 bg-white dark:bg-gray-800 border border-yellow-300 dark:border-yellow-600 rounded-lg shadow-md p-6 hover:shadow-lg transition">
+      <h2 class="text-xl font-semibold text-yellow-900 dark:text-yellow-200 mb-2">🤖 Ask AI</h2>
+      <p class="text-sm text-gray-700 dark:text-gray-300">Chat with HuffleBot – your friendly AI tutor.</p>
+    </a>
+
+  </div>
+
+  <!-- Dark Mode Script -->
+  <script>
+    const toggle = document.getElementById('darkToggle');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'dark') {
+      toggle.checked = true;
+      html.classList.add('dark');
+    }
+
+    toggle.addEventListener('change', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+    function logout() {
+  // Optional: Clear localStorage or sessionStorage if needed
+  // localStorage.clear();
+
+  window.location.href = "/frontend/index.html";  // Adjust the path to match your actual index.html
+}
+
+  </script>
+
+</body>
+</html>
